@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://danyalba03-spec.github.io/sneaklab-web/sitemap.xml

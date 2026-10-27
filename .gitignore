@@ -1,0 +1,37 @@
+# Secretos y configuración local — NUNCA subir
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+secrets/
+credentials*.json
+
+# Sistema operativo y editores
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+
+# Fotos originales sin optimizar (pesadas). Sube solo las .webp de docs/assets/img
+originales/
+*.jpeg
+*.HEIC
+*.heic
+
+# Dependencias / builds futuros
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Reportes locales
+playwright-report/
+test-results/
+lighthouse-*.html
+
+# Configuración local de Claude Code
+.claude/
