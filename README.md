@@ -69,22 +69,46 @@ Abre `docs/assets/js/config.js`:
 
 ## Cambiar servicios y precios
 
-Abre `docs/assets/js/data.js`, sección `services`. Cada servicio tiene:
+Abre `docs/assets/js/data.js`, sección `services`. Hoy hay 4 servicios:
+
+| Servicio | Precio por par |
+|---|---|
+| Limpieza básica | $120 |
+| Limpieza + aroma | $140 |
+| Materiales delicados (gamuza, nobuk, etc.) | $130 |
+| Materiales delicados + aroma | $150 |
+
+Cada servicio tiene:
 
 ```js
 {
-  id: 'basica',                    // identificador sin espacios
-  name: 'Limpieza básica',         // título del servicio
+  id: 'basica',                           // identificador sin espacios
+  name: 'Limpieza básica',                // título del servicio
+  group: 'Malla, tela, piel y sintéticos',// para qué materiales es
   description: '...',
   benefits: ['...', '...', '...'],
-  price: 120,                      // número en pesos, o null = "Por cotización"
-  featured: true                   // opcional: agrega la etiqueta "Más completo"
+  price: 120,                             // número en pesos, o null = "Por cotización"
+  tone: 'mint'                            // color de la tarjeta: 'mint', 'pink', 'sun' o 'blue'
 }
 ```
 
-El botón **Cotizar** de cada servicio prepara solo un mensaje de WhatsApp con el nombre del servicio, y el servicio también aparece en el formulario de contacto.
+El botón **Cotizar este servicio** de cada tarjeta prepara un mensaje de WhatsApp con el nombre del servicio, y el servicio también aparece en el formulario de contacto.
 
-Si cambias precios, actualiza también la página de inicio (`index.html`, "Desde $120"), la pregunta "¿Cuánto cuesta?" en `contacto.html` y los precios dentro de `<script type="application/ld+json">` en `index.html`.
+Si cambias precios, actualiza también:
+- La etiqueta amarilla "Desde $120" y la franja de precios en movimiento del inicio (`index.html`).
+- El texto de respaldo dentro de `<noscript>` en `index.html` y `servicios.html`.
+- La pregunta "¿Cuánto cuesta?" en `contacto.html`.
+- Los precios dentro de `<script type="application/ld+json">` en `index.html`.
+- La descripción (`<meta name="description">`) de `servicios.html`.
+
+---
+
+## Logo y colores
+
+- **Logo completo (imagen):** `docs/assets/img/logo-sneaklab.png` (letras oscuras, para fondos claros) y `docs/assets/img/logo-sneaklab-blanco.png` (letras blancas, para fondos oscuros). Aparece en el encabezado, en el pie de página y en grande en Inicio y Nosotros.
+- **Ícono solo (el tenis):** `docs/assets/img/favicon.svg`. De él salen `favicon-32.png`, `apple-touch-icon.png`, `icon-192.png` e `icon-512.png`. `icon-512.png` sirve como foto de perfil para WhatsApp o Instagram.
+- `og-sneaklab.jpg` es la imagen que aparece al compartir el enlace.
+- Los colores están al inicio de `docs/assets/css/styles.css` (`--blue`, `--pink`, `--sun`, `--mint` y `--ink`, el fondo oscuro). La tipografía es Archivo (Google Fonts); los títulos usan su versión condensada en mayúsculas.
 
 ---
 
@@ -230,7 +254,7 @@ Para agregar reservaciones, calendario, seguimiento de pedidos, panel de adminis
 ## Mantenimiento
 
 - Actualiza las fotos y la galería con trabajos nuevos, siempre con fotos propias.
-- Si modificas `styles.css` o algún archivo `.js`, sube el número de versión en las páginas HTML (por ejemplo cambia `?v=3` por `?v=4` en todos los `.html`). Así los navegadores descargan la versión nueva en vez de usar la que tenían guardada.
+- Si modificas `styles.css` o algún archivo `.js`, sube el número de versión en las páginas HTML (por ejemplo cambia `?v=5` por `?v=6` en todos los `.html`). Así los navegadores descargan la versión nueva en vez de usar la que tenían guardada.
 - Revisa precios y horarios en `config.js` y `data.js`.
 - Si cambias cómo usas los datos personales, actualiza el Aviso de privacidad y cambia `privacyNoticeVersion`.
 - Prueba el sitio en celular después de cada cambio importante.

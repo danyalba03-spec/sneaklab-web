@@ -209,25 +209,28 @@
     });
   }
 
-  /* ---------- Servicios ---------- */
-  function serviceCard(service) {
+  /* ---------- Servicios (tarjetas tipo etiqueta de precio) ---------- */
+  var TONES = ['mint', 'pink', 'sun', 'blue'];
+
+  function serviceCard(service, i) {
+    var tone = TONES.indexOf(service.tone) >= 0 ? service.tone : TONES[i % TONES.length];
     var price = service.price
       ? el('p', { className: 'service-price' }, [document.createTextNode(formatPrice(service.price)), el('small', { text: 'MXN por par' })])
       : el('p', { className: 'service-price is-quote', text: 'Por cotización' });
     var benefits = el('ul', { className: 'service-points', 'aria-label': 'Incluye' },
       (service.benefits || []).map(function (b) { return el('li', { text: b }); }));
     var cta = el('a', {
-      className: 'btn btn-outline', 'data-wa': 'Hola SneakLab, quiero solicitar una cotización de: ' + service.name + '.',
-      href: 'contacto.html', text: 'Cotizar',
+      className: 'btn btn-ink btn-sm', 'data-wa': 'Hola SneakLab, quiero solicitar una cotización de: ' + service.name + '.',
+      href: 'contacto.html', text: 'Cotizar este servicio',
       'aria-label': 'Solicitar cotización de ' + service.name + ' por WhatsApp'
     });
-    var title = el('div', { className: 'service-title' }, [
+    return el('article', { className: 'service-tag tone-' + tone, id: 'servicio-' + service.id }, [
+      service.group ? el('p', { className: 'service-group', text: service.group }) : null,
       el('h3', { text: service.name }),
-      service.featured ? el('span', { className: 'service-badge', text: 'Más completo' }) : null
-    ]);
-    return el('article', { className: 'service-row' + (service.featured ? ' is-featured' : ''), id: 'servicio-' + service.id }, [
-      el('div', { className: 'service-info' }, [title, el('p', { text: service.description }), benefits]),
-      el('div', { className: 'service-side' }, [price, cta])
+      price,
+      el('p', { className: 'service-desc', text: service.description }),
+      benefits,
+      cta
     ]);
   }
 
@@ -238,7 +241,7 @@
         ? ids.map(function (id) { return DATA.services.filter(function (s) { return s.id === id; })[0]; }).filter(Boolean)
         : DATA.services;
       grid.textContent = '';
-      list.forEach(function (s) { grid.appendChild(serviceCard(s)); });
+      list.forEach(function (s, i) { grid.appendChild(serviceCard(s, i)); });
     });
     $all('[data-service-options]').forEach(function (select) {
       DATA.services.forEach(function (s) { select.appendChild(el('option', { value: s.name, text: s.name })); });

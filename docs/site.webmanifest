@@ -3,8 +3,8 @@
   "short_name": "SneakLab",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#08142e",
-  "theme_color": "#08142e",
+  "background_color": "#131219",
+  "theme_color": "#131219",
   "lang": "es-MX",
   "icons": [
     { "src": "assets/img/icon-192.png", "sizes": "192x192", "type": "image/png" },

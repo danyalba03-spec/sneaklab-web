@@ -2,7 +2,9 @@
  * CONTENIDO EDITABLE: SERVICIOS Y GALERÍA
  * ---------------------------------------
  * Servicios: cambia nombre, descripción, beneficios o precio.
- *   price: número en pesos (ej. 120) o null para "Precio por cotización".
+ *   group: para qué materiales es el servicio (texto corto).
+ *   price: número en pesos (ej. 120) o null para "Por cotización".
+ *   tone: color de la tarjeta: 'mint', 'pink', 'sun' o 'blue'.
  * Galería: cada trabajo es un PAR de fotos (antes y después) del mismo
  *   tenis y, de preferencia, desde el mismo ángulo. Cada foto necesita su
  *   archivo en assets/img/ (versión grande y -sm). Una foto de "antes" nunca
@@ -13,52 +15,38 @@ window.SNEAKLAB_DATA = Object.freeze({
     {
       id: 'basica',
       name: 'Limpieza básica',
+      group: 'Malla, tela, piel y sintéticos',
       description: 'Limpieza general por fuera: corte, entresuela y suela para quitar polvo y suciedad del uso diario.',
       benefits: ['Ideal para mantenimiento frecuente', 'Cuidado según el material', 'Agujetas incluidas en la revisión'],
-      price: 120
+      price: 120,
+      tone: 'mint'
     },
     {
       id: 'aroma',
       name: 'Limpieza + aroma',
+      group: 'Malla, tela, piel y sintéticos',
       description: 'Todo lo de la limpieza básica más perfume especializado para calzado, con un aroma fresco.',
-      benefits: ['Frescura extra por dentro', 'Perfume especial para tenis', 'Nuestra opción más completa'],
+      benefits: ['Frescura extra por dentro', 'Perfume especial para tenis', 'Incluye la limpieza básica'],
       price: 140,
-      featured: true
-    },
-    {
-      id: 'profunda',
-      name: 'Limpieza profunda',
-      description: 'Para pares con suciedad acumulada: trabajo detallado en costuras, malla, plantilla y zonas difíciles.',
-      benefits: ['Atención a costuras y malla', 'Pensada para suciedad acumulada', 'Revisamos el par antes de empezar'],
-      price: null
-    },
-    {
-      id: 'suelas',
-      name: 'Limpieza de suelas',
-      description: 'Enfoque en la goma, los bordes y la entresuela, donde más se nota el desgaste y el polvo.',
-      benefits: ['Bordes y entresuela', 'Goma y dibujo de la suela', 'Complementa cualquier limpieza'],
-      price: null
-    },
-    {
-      id: 'agujetas',
-      name: 'Limpieza de agujetas',
-      description: 'Lavado de agujetas por separado para que combinen con el resto del par limpio.',
-      benefits: ['Se lavan aparte', 'Evita que manchen el corte', 'Detalle que cambia el look'],
-      price: null
-    },
-    {
-      id: 'manchas',
-      name: 'Tratamiento de manchas',
-      description: 'Evaluamos la mancha y el material para intentar reducirla con el método adecuado.',
-      benefits: ['Evaluación por foto antes', 'Método según el tipo de mancha', 'Te decimos qué esperar'],
-      price: null
+      tone: 'pink'
     },
     {
       id: 'delicados',
       name: 'Materiales delicados',
+      group: 'Gamuza, nobuk y tejidos sensibles',
       description: 'Cuidado específico para gamuza, nobuk y tejidos sensibles que no aguantan una limpieza común.',
       benefits: ['Gamuza y nobuk', 'Técnica controlada', 'Protege textura y color'],
-      price: null
+      price: 130,
+      tone: 'sun'
+    },
+    {
+      id: 'delicados-aroma',
+      name: 'Materiales delicados + aroma',
+      group: 'Gamuza, nobuk y tejidos sensibles',
+      description: 'Todo lo del cuidado para materiales delicados más perfume especializado para calzado.',
+      benefits: ['Técnica controlada', 'Perfume especial para tenis', 'Incluye el cuidado para delicados'],
+      price: 150,
+      tone: 'blue'
     }
   ],
 
