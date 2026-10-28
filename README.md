@@ -74,18 +74,17 @@ Abre `docs/assets/js/data.js`, sección `services`. Cada servicio tiene:
 ```js
 {
   id: 'basica',                    // identificador sin espacios
-  name: 'Limpieza básica',         // título de la tarjeta
+  name: 'Limpieza básica',         // título del servicio
   description: '...',
   benefits: ['...', '...', '...'],
-  price: 120,                      // número en pesos, o null = "Precio por cotización"
-  image: '8714',                   // nombre de la foto en assets/img (sin .webp)
-  featured: true                   // opcional: resalta la tarjeta
+  price: 120,                      // número en pesos, o null = "Por cotización"
+  featured: true                   // opcional: agrega la etiqueta "Más completo"
 }
 ```
 
-El botón **Solicitar cotización** de cada tarjeta prepara solo un mensaje de WhatsApp con el nombre del servicio, y el servicio también aparece en el formulario de contacto.
+El botón **Cotizar** de cada servicio prepara solo un mensaje de WhatsApp con el nombre del servicio, y el servicio también aparece en el formulario de contacto.
 
-Si cambias precios, actualiza también la página de inicio (`index.html`, "Limpieza básica desde…"), la pregunta "¿Cuánto cuesta?" en `contacto.html` y los precios dentro de `<script type="application/ld+json">` en `index.html`.
+Si cambias precios, actualiza también la página de inicio (`index.html`, "Desde $120"), la pregunta "¿Cuánto cuesta?" en `contacto.html` y los precios dentro de `<script type="application/ld+json">` en `index.html`.
 
 ---
 
@@ -94,15 +93,16 @@ Si cambias precios, actualiza también la página de inicio (`index.html`, "Limp
 1. Usa **solo fotos de trabajos tuyos** (o fotos con permiso por escrito de su autor).
 2. Crea dos versiones `.webp` de cada foto: una grande (máx. 1400 px de lado, por ejemplo `9001.webp`) y una chica (máx. 640 px, `9001-sm.webp`). Puedes usar <https://squoosh.app> (gratis, sin subir tus fotos a ningún servidor).
 3. Cópialas a `docs/assets/img/`.
-4. En `data.js`, agrega una línea en `gallery`:
+4. La galería muestra **siempre pares**: el mismo tenis antes y después, de preferencia desde el mismo ángulo. Una foto de "antes" nunca aparece sola. En `data.js`, agrega una línea en `gallery`:
 
 ```js
-{ file: '9001', pair: 'Nombre del par', category: 'running', stage: 'despues', alt: 'Descripción de la foto' },
+{ pair: 'Nombre del par', view: 'Vista lateral', category: 'blanco', before: '9001', after: '9002' },
 ```
 
-- `stage`: `'antes'` o `'despues'`.
-- `category`: una de las que están en `categories` (puedes crear nuevas).
-- `alt`: describe la foto (ayuda a personas con discapacidad visual y a Google).
+- `before` / `after`: nombres de las fotos de antes y después (sin `.webp`).
+- `view`: el ángulo de las fotos (se usa en el pie de foto y en la descripción para Google y lectores de pantalla).
+- `category`: una de las que están en `categories` (puedes crear nuevas; cada una aparece como filtro).
+- Si solo tienes la foto de "antes" de un par, no lo agregues hasta tener la de "después".
 
 Para el comparador antes/después, agrega un par en `comparisons`, de preferencia con dos fotos tomadas desde el mismo ángulo.
 
@@ -221,7 +221,7 @@ git check-ignore -v .env
 
 Para agregar reservaciones, calendario, seguimiento de pedidos, panel de administración o pagos se necesitará un **backend** (por ejemplo Flask + base de datos, o un servicio como Supabase o Firebase). La estructura actual lo facilita:
 
-- Los servicios ya viven en datos (`data.js`). Después pueden venir de una API sin rehacer las tarjetas.
+- Los servicios ya viven en datos (`data.js`). Después pueden venir de una API sin rehacer la lista.
 - El formulario ya valida y arma los datos de la solicitud. Solo habría que cambiar el destino de WhatsApp a la API.
 - Cuando exista el backend, necesitará: validación del lado del servidor, contraseñas con hash, sesiones seguras, protección contra abuso (límite de intentos y CAPTCHA), secretos en variables de entorno del servidor y una actualización del Aviso de privacidad.
 
@@ -230,6 +230,7 @@ Para agregar reservaciones, calendario, seguimiento de pedidos, panel de adminis
 ## Mantenimiento
 
 - Actualiza las fotos y la galería con trabajos nuevos, siempre con fotos propias.
+- Si modificas `styles.css` o algún archivo `.js`, sube el número de versión en las páginas HTML (por ejemplo cambia `?v=3` por `?v=4` en todos los `.html`). Así los navegadores descargan la versión nueva en vez de usar la que tenían guardada.
 - Revisa precios y horarios en `config.js` y `data.js`.
 - Si cambias cómo usas los datos personales, actualiza el Aviso de privacidad y cambia `privacyNoticeVersion`.
 - Prueba el sitio en celular después de cada cambio importante.

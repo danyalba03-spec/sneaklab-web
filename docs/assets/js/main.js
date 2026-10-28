@@ -213,26 +213,21 @@
   function serviceCard(service) {
     var price = service.price
       ? el('p', { className: 'service-price' }, [document.createTextNode(formatPrice(service.price)), el('small', { text: 'MXN por par' })])
-      : el('p', { className: 'service-price is-quote', text: 'Precio por cotización' });
-    var benefits = el('ul', { className: 'check-list', 'aria-label': 'Beneficios' },
+      : el('p', { className: 'service-price is-quote', text: 'Por cotización' });
+    var benefits = el('ul', { className: 'service-points', 'aria-label': 'Incluye' },
       (service.benefits || []).map(function (b) { return el('li', { text: b }); }));
     var cta = el('a', {
-      className: 'btn', 'data-wa': 'Hola SneakLab, quiero solicitar una cotización de: ' + service.name + '.',
-      href: 'contacto.html', text: 'Solicitar cotización',
+      className: 'btn btn-outline', 'data-wa': 'Hola SneakLab, quiero solicitar una cotización de: ' + service.name + '.',
+      href: 'contacto.html', text: 'Cotizar',
       'aria-label': 'Solicitar cotización de ' + service.name + ' por WhatsApp'
     });
-    return el('article', { className: 'service-card' + (service.featured ? ' is-featured' : ''), id: 'servicio-' + service.id }, [
-      el('div', { className: 'service-media' }, [
-        img(service.image, '', { srcset: true, sizes: '(max-width: 600px) 100vw, (max-width: 1024px) 50vw, 400px' }),
-        service.featured ? el('span', { className: 'service-badge', text: 'Más completo' }) : null
-      ]),
-      el('div', { className: 'service-body' }, [
-        el('h3', { text: service.name }),
-        el('p', { text: service.description }),
-        benefits,
-        price,
-        cta
-      ])
+    var title = el('div', { className: 'service-title' }, [
+      el('h3', { text: service.name }),
+      service.featured ? el('span', { className: 'service-badge', text: 'Más completo' }) : null
+    ]);
+    return el('article', { className: 'service-row' + (service.featured ? ' is-featured' : ''), id: 'servicio-' + service.id }, [
+      el('div', { className: 'service-info' }, [title, el('p', { text: service.description }), benefits]),
+      el('div', { className: 'service-side' }, [price, cta])
     ]);
   }
 
@@ -251,34 +246,44 @@
     });
   }
 
-  /* ---------- Galería ---------- */
+  /* ---------- Galería (siempre en pares antes/después) ---------- */
   function initGallery() {
     var grid = $('[data-gallery]');
     if (!grid) return;
     var filters = $('[data-gallery-filters]');
     var dialog = $('[data-lightbox]');
     var current = 'todos';
-    var visible = [];
+    var photos = [];
     var index = 0;
     var lastFocus = null;
-    var limit = parseInt(grid.getAttribute('data-limit'), 10) || 0;
 
     function stageLabel(stage) { return stage === 'despues' ? 'Después' : 'Antes'; }
+    function altText(item, stage) {
+      return item.pair + ' ' + (stage === 'despues' ? 'después' : 'antes') + ' de la limpieza, ' + item.view.toLowerCase();
+    }
+
+    function half(item, stage, photoIndex) {
+      var file = stage === 'despues' ? item.after : item.before;
+      var button = el('button', { type: 'button', 'aria-label': 'Ampliar foto: ' + altText(item, stage) }, [img(file, altText(item, stage), { small: true })]);
+      button.addEventListener('click', function () { open(photoIndex); });
+      return el('div', { className: 'pair-half' }, [button, el('span', { className: 'tag ' + (stage === 'despues' ? 'is-after' : 'is-before'), text: stageLabel(stage) })]);
+    }
 
     function render(animate) {
       grid.textContent = '';
-      visible = DATA.gallery.filter(function (g) { return current === 'todos' || g.category === current; });
-      if (limit) visible = visible.slice(0, limit);
+      photos = [];
+      var visible = DATA.gallery.filter(function (g) { return current === 'todos' || g.category === current; });
       if (!visible.length) {
-        grid.appendChild(el('p', { className: 'gallery-empty', text: 'Todavía no hay fotos en esta categoría. Pronto agregaremos más trabajos.' }));
+        grid.appendChild(el('p', { className: 'gallery-empty', text: 'Todavía no hay trabajos en esta categoría. Pronto agregaremos más.' }));
         return;
       }
       visible.forEach(function (item, i) {
-        var tags = [el('span', { className: 'tag ' + (item.stage === 'despues' ? 'is-after' : 'is-before'), text: stageLabel(item.stage) }), el('span', { className: 'tag', text: item.pair })];
-        var button = el('button', { type: 'button', 'aria-label': 'Ampliar foto: ' + item.alt }, [img(item.file, item.alt, { small: true })]);
-        button.addEventListener('click', function () { open(i); });
-        var fig = el('figure', { className: 'gallery-item' + (animate && !reduceMotion ? ' is-entering' : '') }, [button, el('figcaption', {}, tags)]);
-        if (animate) fig.style.animationDelay = Math.min(i * 30, 300) + 'ms';
+        photos.push({ file: item.before, stage: 'antes', item: item }, { file: item.after, stage: 'despues', item: item });
+        var fig = el('figure', { className: 'pair-card' + (animate && !reduceMotion ? ' is-entering' : '') }, [
+          el('div', { className: 'pair-media' }, [half(item, 'antes', i * 2), half(item, 'despues', i * 2 + 1)]),
+          el('figcaption', {}, [el('strong', { text: item.pair }), el('span', { text: item.view })])
+        ]);
+        if (animate) fig.style.animationDelay = Math.min(i * 40, 240) + 'ms';
         grid.appendChild(fig);
       });
     }
@@ -296,18 +301,18 @@
     }
 
     function show(i) {
-      index = (i + visible.length) % visible.length;
-      var item = visible[index];
+      index = (i + photos.length) % photos.length;
+      var photo = photos[index];
       var image = $('img', dialog);
-      image.src = IMG + item.file + '.webp';
-      image.alt = item.alt;
+      image.src = IMG + photo.file + '.webp';
+      image.alt = altText(photo.item, photo.stage);
       var cap = $('figcaption', dialog);
       cap.textContent = '';
-      cap.appendChild(el('span', { className: 'tag ' + (item.stage === 'despues' ? 'is-after' : 'is-before'), text: stageLabel(item.stage) }));
-      cap.appendChild(el('span', { text: item.pair + ' · ' + (index + 1) + ' de ' + visible.length }));
+      cap.appendChild(el('span', { className: 'tag ' + (photo.stage === 'despues' ? 'is-after' : 'is-before'), text: stageLabel(photo.stage) }));
+      cap.appendChild(el('span', { text: photo.item.pair + ', ' + photo.item.view.toLowerCase() + ' · ' + (index + 1) + ' de ' + photos.length }));
     }
     function open(i) {
-      if (!dialog || typeof dialog.showModal !== 'function') { window.open(IMG + visible[i].file + '.webp', '_blank', 'noopener'); return; }
+      if (!dialog || typeof dialog.showModal !== 'function') { window.open(IMG + photos[i].file + '.webp', '_blank', 'noopener'); return; }
       lastFocus = document.activeElement;
       show(i);
       dialog.showModal();
