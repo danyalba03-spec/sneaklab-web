@@ -254,7 +254,7 @@ Para agregar reservaciones, calendario, seguimiento de pedidos, panel de adminis
 ## Mantenimiento
 
 - Actualiza las fotos y la galería con trabajos nuevos, siempre con fotos propias.
-- Si modificas `styles.css` o algún archivo `.js`, sube el número de versión en las páginas HTML (por ejemplo cambia `?v=5` por `?v=6` en todos los `.html`). Así los navegadores descargan la versión nueva en vez de usar la que tenían guardada.
+- Si modificas `styles.css` o algún archivo `.js`, sube el número de versión en las páginas HTML (por ejemplo cambia `?v=6` por `?v=7` en todos los `.html`). Así los navegadores descargan la versión nueva en vez de usar la que tenían guardada.
 - Revisa precios y horarios en `config.js` y `data.js`.
 - Si cambias cómo usas los datos personales, actualiza el Aviso de privacidad y cambia `privacyNoticeVersion`.
 - Prueba el sitio en celular después de cada cambio importante.

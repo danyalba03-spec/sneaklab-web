@@ -29,14 +29,14 @@ window.SNEAKLAB_CONFIG = Object.freeze({
 
   // Horarios: deja la lista vacía para mostrar "Escríbenos para confirmar".
   hours: Object.freeze([
-    // { days: 'Lunes a viernes', time: '10:00 – 19:00' },
-    // { days: 'Sábado', time: '10:00 – 14:00' }
+    // Ejemplo con días: { days: 'Lunes a sábado', time: '9:00 a. m. a 6:00 p. m.' }
+    { days: 'Horario:', time: '9:00 a. m. a 6:00 p. m.' }
   ]),
 
   // Datos legales (OBLIGATORIOS antes de publicar). Ver README.
   legal: Object.freeze({
-    responsibleName: '[NOMBRE COMPLETO DEL RESPONSABLE]',
-    address: '[DOMICILIO PARA OÍR Y RECIBIR NOTIFICACIONES]',
+    responsibleName: 'Daniel Alejandro Alba Zamarripa',
+    address: '',
     contactEmail: '', // Correo para solicitudes de privacidad (derechos ARCO)
     privacyNoticeVersion: '2026-10-26'
   }),
