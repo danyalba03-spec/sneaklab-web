@@ -415,6 +415,7 @@
       lines.push('');
       lines.push('Registro de consentimiento:');
       lines.push('- Acepto el Aviso de privacidad (versión ' + ((CONFIG.legal || {}).privacyNoticeVersion || 's/v') + ').');
+      lines.push('- Acepto que SneakLab muestre fotos de mis tenis como muestra de trabajo (Términos y condiciones).');
       lines.push('- Promociones por WhatsApp: ' + (promos ? 'Sí acepto' : 'No acepto') + '.');
       lines.push('- Fecha: ' + now.toLocaleString('es-MX', { dateStyle: 'long', timeStyle: 'short' }) + ' (' + now.toISOString() + ').');
       lines.push('- Medio: formulario de contacto del sitio web.');

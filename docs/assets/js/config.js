@@ -38,7 +38,7 @@ window.SNEAKLAB_CONFIG = Object.freeze({
     responsibleName: 'Daniel Alejandro Alba Zamarripa',
     address: '',
     contactEmail: '', // Correo para solicitudes de privacidad (derechos ARCO)
-    privacyNoticeVersion: '2026-10-26'
+    privacyNoticeVersion: '2026-10-28'
   }),
 
   // Analítica opcional. Si pones un ID de Google Analytics 4 (G-XXXXXXX),
