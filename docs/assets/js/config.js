@@ -36,7 +36,7 @@ window.SNEAKLAB_CONFIG = Object.freeze({
   // Datos legales (OBLIGATORIOS antes de publicar). Ver README.
   legal: Object.freeze({
     responsibleName: 'Daniel Alejandro Alba Zamarripa',
-    address: '',
+    address: '', // Vacío = solo se muestra la ciudad
     contactEmail: '', // Correo para solicitudes de privacidad (derechos ARCO)
     privacyNoticeVersion: '2026-10-28'
   }),
@@ -44,6 +44,7 @@ window.SNEAKLAB_CONFIG = Object.freeze({
   // Analítica opcional. Si pones un ID de Google Analytics 4 (G-XXXXXXX),
   // el sitio mostrará un aviso de cookies y solo cargará la analítica
   // si la persona acepta. Vacío = sin analítica y sin cookies.
+  // Al activarla, agrega también los dominios de Google a la CSP (ver README).
   analytics: Object.freeze({
     ga4Id: ''
   })

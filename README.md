@@ -61,7 +61,7 @@ Abre `docs/assets/js/config.js`:
 - `phoneDisplay`: cómo se ve el número en la página.
 - `social.instagram`, `social.tiktok`, `social.facebook`, `social.googleBusiness`: pega la URL completa que empiece con `https://`. Si lo dejas vacío, no aparece.
 - `hours`: quita las `//` de los ejemplos y escribe tus horarios reales.
-- `legal`: tu nombre completo o razón social, el domicilio para notificaciones y un correo para solicitudes de privacidad. **Llénalo antes de publicar.**
+- `legal`: tu nombre completo o razón social, el domicilio para notificaciones (opcional: si lo dejas vacío solo se muestra la ciudad) y un correo para solicitudes de privacidad. **Llénalo antes de publicar.**
 
 > Este archivo es público. Nunca pongas contraseñas ni claves aquí.
 
@@ -108,7 +108,7 @@ Si cambias precios, actualiza también:
 - **Logo completo (imagen):** `docs/assets/img/logo-sneaklab.png` (letras oscuras, para fondos claros) y `docs/assets/img/logo-sneaklab-blanco.png` (letras blancas, para fondos oscuros). Aparece en el encabezado, en el pie de página y en grande en Inicio y Nosotros.
 - **Ícono solo (el tenis):** `docs/assets/img/favicon.svg`. De él salen `favicon-32.png`, `apple-touch-icon.png`, `icon-192.png` e `icon-512.png`. `icon-512.png` sirve como foto de perfil para WhatsApp o Instagram.
 - `og-sneaklab.jpg` es la imagen que aparece al compartir el enlace.
-- Los colores están al inicio de `docs/assets/css/styles.css` (`--blue`, `--pink`, `--sun`, `--mint` y `--ink`, el fondo oscuro). La tipografía es Archivo (Google Fonts); los títulos usan su versión condensada en mayúsculas.
+- Los colores están al inicio de `docs/assets/css/styles.css` (`--blue`, `--pink`, `--sun`, `--mint` y `--ink`, el fondo oscuro). La tipografía es Archivo, servida desde `docs/assets/fonts/` (sin Google Fonts, licencia OFL); los títulos usan su versión condensada en mayúsculas.
 
 ---
 
@@ -212,6 +212,10 @@ El sitio funciona sin analítica y sin cookies. Para medir visitas:
 2. Pégalo en `config.js` → `analytics.ga4Id`.
 3. El sitio mostrará un aviso de cookies y **solo cargará la analítica si la persona acepta**.
 4. Actualiza la `Política de cookies` para decir que la analítica está activa.
+5. Agrega los dominios de Google a la Content Security Policy de **las 11 páginas** (la etiqueta `<meta http-equiv="Content-Security-Policy">`); sin esto el navegador bloquea la analítica:
+   - `script-src`: `https://www.googletagmanager.com`
+   - `img-src`: `https://www.googletagmanager.com https://*.google-analytics.com`
+   - `connect-src`: `https://*.google-analytics.com https://*.analytics.google.com`
 
 ---
 
@@ -220,8 +224,10 @@ El sitio funciona sin analítica y sin cookies. Para medir visitas:
 Lo que ya está implementado:
 
 - No se usa `innerHTML` con datos: todo el contenido dinámico se crea de forma segura con `textContent`.
-- Hay una **Content Security Policy** en cada página: solo se cargan scripts del propio sitio (y Google Analytics, si lo activas).
+- Hay una **Content Security Policy** en cada página: solo se cargan scripts del propio sitio. Google Analytics no está permitido mientras no lo actives (ver "Analítica").
 - Los enlaces externos llevan `rel="noopener noreferrer"`.
+- Sin servicios de terceros al cargar la página: la tipografía se sirve desde el propio sitio, así que la CSP solo permite `'self'`.
+- Protección contra clickjacking: si otra página intenta mostrar el sitio dentro de un iframe, `main.js` lo saca o lo oculta.
 - Las URLs de redes sociales se validan para que empiecen con `https://`.
 - El formulario valida los datos y no guarda nada en el navegador ni en un servidor.
 - El sitio no tiene contraseñas, tokens ni claves. GitHub Pages sirve todo con HTTPS.

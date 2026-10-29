@@ -6,6 +6,14 @@
 (function () {
   'use strict';
 
+  // Anti-clickjacking: GitHub Pages no permite el encabezado frame-ancestors,
+  // así que si otra página mete este sitio en un iframe, salimos de él.
+  if (window.top !== window.self) {
+    try { window.top.location.replace(window.location.href); } catch (e) { /* iframe bloqueado */ }
+    document.documentElement.style.display = 'none';
+    return;
+  }
+
   var CONFIG = window.SNEAKLAB_CONFIG || {};
   var DATA = window.SNEAKLAB_DATA || { services: [], gallery: [], categories: [], comparisons: [] };
   var IMG = 'assets/img/';
@@ -114,6 +122,10 @@
       } else if (value) {
         node.textContent = value;
       }
+    });
+    // Partes opcionales (p. ej. el domicilio): solo se muestran si el dato existe.
+    $all('[data-legal-wrap]').forEach(function (node) {
+      node.hidden = !legal[node.getAttribute('data-legal-wrap')];
     });
 
     $all('[data-year]').forEach(function (node) { node.textContent = String(new Date().getFullYear()); });
