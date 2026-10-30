@@ -9,7 +9,7 @@
   <meta name="description" content="Conoce SneakLab, la evolución de FreshKicks: limpieza y cuidado de tenis en León, Guanajuato. Nuestra historia, misión, visión y valores.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://danyalba03-spec.github.io/sneaklab-web/nosotros.html">
-  <meta name="theme-color" content="#131219">
+  <meta name="theme-color" content="#F7F7F5">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="es_MX">
   <meta property="og:site_name" content="SneakLab">
@@ -25,8 +25,9 @@
   <link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
   <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
   <link rel="manifest" href="site.webmanifest">
-  <link rel="preload" href="assets/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/styles.css?v=9">
+  <link rel="preload" href="assets/fonts/space-grotesk-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/styles.css?v=10">
 </head>
 <body>
 <a class="skip-link" href="#contenido">Saltar al contenido</a>
@@ -42,47 +43,54 @@
         <a href="servicios.html">Servicios</a>
         <a href="galeria.html">Galería</a>
         <a href="contacto.html">Contacto</a>
-        <a class="btn btn-sm" href="contacto.html" data-wa="Hola SneakLab, quiero cotizar la limpieza de mis tenis.">Cotiza por WhatsApp</a>
+        <a class="btn btn-primary btn-sm" href="contacto.html" data-wa="Hola SneakLab, quiero cotizar la limpieza de mis tenis.">Cotiza por WhatsApp</a>
     </nav>
   </div>
 </header>
 <main id="contenido">
-  <section class="page-hero has-photo on-dark tone-red">
-    <img class="page-hero-photo" src="assets/img/8723.webp" srcset="assets/img/8723-sm.webp 480w, assets/img/8723.webp 1050w" sizes="(max-width: 860px) 100vw, 55vw" alt="" width="1050" height="1400" fetchpriority="high" decoding="async">
-    <span class="spark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1c1 6.2 4.8 10 11 11-6.2 1-10 4.8-11 11-1-6.2-4.8-10-11-11 6.2-1 10-4.8 11-11z"/></svg></span>
+  <section class="page-intro" aria-labelledby="page-titulo">
     <div class="wrap">
       <p class="breadcrumb"><a href="index.html">Inicio</a> / Nosotros</p>
-      <h1>Cuidamos lo que te mueve</h1>
-      <p class="lead">De dónde venimos, qué nos importa y cómo trabajamos con cada par.</p>
+      <div class="intro-split">
+        <h1 id="page-titulo">Cuidamos lo que te mueve.</h1>
+        <p class="lead">De dónde venimos, qué nos importa y cómo trabajamos con cada par.</p>
+      </div>
+    </div>
+    <div class="wrap">
+      <figure class="banner-media">
+        <img src="assets/img/8725.webp" srcset="assets/img/8725-sm.webp 480w, assets/img/8725.webp 1050w" sizes="(max-width: 1320px) 100vw, 1280px" alt="Par de tenis de running grises después de la limpieza de SneakLab" width="1050" height="1400" loading="eager" fetchpriority="high" decoding="async">
+      </figure>
     </div>
   </section>
 
-  <section class="band" aria-labelledby="historia-titulo">
-    <div class="wrap split">
-      <div class="split-copy brand-block">
+  <section class="section" aria-labelledby="historia-titulo">
+    <div class="wrap story">
+      <div class="story-side" data-reveal>
         <img class="logo-feature" src="assets/img/logo-sneaklab.png" alt="Logo de SneakLab" width="791" height="150" loading="lazy">
+      </div>
+      <div class="story-copy" data-reveal>
         <h2 id="historia-titulo">Nuestra historia</h2>
         <p class="lead">Todo empezó con FreshKicks: un proyecto para limpiar tenis en León con el cuidado que nosotros mismos queríamos para los nuestros.</p>
         <p>Cada par nos enseñó algo. Que la malla pide paciencia, que la gamuza no perdona las prisas y que una suela limpia cambia todo el look.</p>
         <p>SneakLab es el siguiente paso de esa historia: la misma dedicación de FreshKicks, con servicios mejor definidos, un proceso ordenado y una forma más sencilla de cotizar.</p>
       </div>
-      <div class="origin-media is-blue">
-        <img src="assets/img/8710.webp" srcset="assets/img/8710-sm.webp 480w, assets/img/8710.webp 1050w" sizes="(max-width: 860px) 100vw, 560px" alt="Tenis de running naranjas después de la limpieza, vista superior" width="1050" height="1400" loading="lazy" decoding="async">
-      </div>
     </div>
   </section>
 
-  <section class="band band-dark on-dark" aria-label="Misión y visión">
+  <section class="section section-dark" aria-label="Misión y visión">
     <div class="wrap mv-grid">
-      <article><h2>Misión</h2><p>Devolverles una mejor apariencia a los tenis de nuestros clientes con una limpieza cuidadosa, adaptada a cada material, y con una atención cercana y honesta.</p></article>
-      <article><h2>Visión</h2><p>Ser una opción de confianza en León para el cuidado de tenis, reconocida por la calidad del trabajo y por tratar cada par como si fuera propio.</p></article>
+      <article data-reveal><h2>Misión</h2><p>Devolverles una mejor apariencia a los tenis de nuestros clientes con una limpieza cuidadosa, adaptada a cada material, y con una atención cercana y honesta.</p></article>
+      <article data-reveal><h2>Visión</h2><p>Ser una opción de confianza en León para el cuidado de tenis, reconocida por la calidad del trabajo y por tratar cada par como si fuera propio.</p></article>
     </div>
   </section>
 
-  <section class="band" aria-labelledby="valores-titulo">
+  <section class="section" aria-labelledby="valores-titulo">
     <div class="wrap">
-      <div class="band-head"><h2 id="valores-titulo">Nuestros valores</h2><p>Lo que guía cada limpieza, desde el primer mensaje hasta la entrega.</p></div>
-      <div class="points">
+      <div class="section-head" data-reveal>
+        <h2 id="valores-titulo">Nuestros valores</h2>
+        <p>Lo que guía cada limpieza, desde el primer mensaje hasta la entrega.</p>
+      </div>
+      <div class="features cols-4" data-reveal>
         <article><h3>Cuidado</h3><p>Tratamos cada par con el método y el tiempo que su material necesita.</p></article>
         <article><h3>Honestidad</h3><p>Antes de empezar te decimos qué podemos mejorar y qué no. Nada de promesas imposibles.</p></article>
         <article><h3>Detalle</h3><p>Costuras, agujetas, bordes y suelas: lo pequeño es lo que hace que un par se vea limpio de verdad.</p></article>
@@ -91,25 +99,26 @@
     </div>
   </section>
 
-  <section class="band band-concrete" aria-labelledby="filosofia-titulo">
-    <div class="wrap split">
-      <div class="split-copy">
-        <h2 id="filosofia-titulo">Nuestra filosofía</h2>
-        <p class="lead">Primero observamos, después limpiamos.</p>
+  <section class="section section-soft" aria-labelledby="filosofia-titulo">
+    <div class="wrap philosophy">
+      <div data-reveal>
+        <h2 id="filosofia-titulo" class="sr-only">Nuestra filosofía</h2>
+        <p class="eyebrow">Nuestra filosofía</p>
+        <blockquote class="quote">Primero observamos, después limpiamos.</blockquote>
         <p>Cada par llega con su propia historia: el material, la construcción y el tipo de suciedad cambian lo que conviene hacer. Por eso no aplicamos el mismo proceso a todos.</p>
       </div>
-      <div class="split-copy">
-        <h2>¿Por qué cuidar tus tenis?</h2>
+      <div data-reveal>
+        <h3>¿Por qué cuidar tus tenis?</h3>
         <p>La suciedad acumulada no solo se ve: con el tiempo puede marcar los materiales y las costuras. Una limpieza adecuada ayuda a conservar mejor su apariencia y a que los sigas usando con gusto.</p>
         <p>Además, unos tenis limpios dicen mucho de quien los lleva.</p>
       </div>
     </div>
   </section>
 
-  <section class="band" aria-labelledby="razones-titulo">
+  <section class="section" aria-labelledby="razones-titulo">
     <div class="wrap">
-      <div class="band-head"><h2 id="razones-titulo">Por qué elegir SneakLab</h2></div>
-      <div class="points">
+      <div class="section-head" data-reveal><h2 id="razones-titulo">Por qué elegir SneakLab</h2></div>
+      <div class="features cols-3" data-reveal>
         <article><h3>Fotos reales</h3><p>Lo que ves en el sitio son trabajos nuestros, no imágenes de catálogo.</p></article>
         <article><h3>Precios claros</h3><p>Precios publicados por par para cada servicio, y confirmación por foto antes de empezar.</p></article>
         <article><h3>Método por material</h3><p>Malla, tela, piel, sintéticos y gamuza reciben un cuidado distinto.</p></article>
@@ -120,14 +129,11 @@
     </div>
   </section>
 
-  <section class="band band-cta on-dark" aria-labelledby="cta-titulo">
-    <div class="wrap cta">
-      <span class="spark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1c1 6.2 4.8 10 11 11-6.2 1-10 4.8-11 11-1-6.2-4.8-10-11-11 6.2-1 10-4.8 11-11z"/></svg></span>
-      <div>
-        <h2 id="cta-titulo">¿Listo para que tus tenis se vean como nuevos?</h2>
-        <p>Mándanos una foto de tu par por WhatsApp y te respondemos con el servicio recomendado y el precio.</p>
-      </div>
-      <a class="btn btn-red" href="contacto.html" data-wa="Hola SneakLab, quiero cotizar la limpieza de mis tenis."><svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.3-.4.8-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2l-.5-.2Z"/></svg>Cotiza por WhatsApp</a>
+  <section class="section section-dark cta-final" aria-labelledby="cta-titulo">
+    <div class="wrap cta-inner" data-reveal>
+      <h2 id="cta-titulo">Tu próximo par favorito puede ser el que ya tienes.</h2>
+      <p>Mándanos una foto por WhatsApp y te respondemos con el servicio recomendado y el precio.</p>
+      <a class="btn btn-primary btn-lg" href="contacto.html" data-wa="Hola SneakLab, quiero cotizar la limpieza de mis tenis."><svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.3-.4.8-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2l-.5-.2Z"/></svg><span>Cotizar mi limpieza</span></a>
     </div>
   </section>
 </main>
@@ -174,8 +180,8 @@
   </div>
 </footer>
 <a class="wa-float" href="contacto.html" data-wa="Hola SneakLab, quiero cotizar la limpieza de mis tenis." aria-label="Escribir a SneakLab por WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.3-.4.8-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2l-.5-.2Z"/></svg><span>WhatsApp</span></a>
-<script src="assets/js/config.js?v=9"></script>
-<script src="assets/js/data.js?v=9"></script>
-<script src="assets/js/main.js?v=9"></script>
+<script src="assets/js/config.js?v=10"></script>
+<script src="assets/js/data.js?v=10"></script>
+<script src="assets/js/main.js?v=10"></script>
 </body>
 </html>

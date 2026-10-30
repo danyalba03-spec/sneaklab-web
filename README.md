@@ -14,7 +14,7 @@ sneaklab-web/
 │   ├── index.html           Inicio
 │   ├── nosotros.html        Nosotros
 │   ├── servicios.html       Servicios
-│   ├── galeria.html         Galería con comparador antes/después
+│   ├── galeria.html         Galería con visor antes/después
 │   ├── contacto.html        Contacto, formulario y preguntas frecuentes
 │   ├── aviso-legal.html, privacidad.html, cookies.html,
 │   │   terminos.html, reembolsos.html     Páginas legales
@@ -24,7 +24,7 @@ sneaklab-web/
 │       ├── css/styles.css   Diseño (colores, tipografía, responsive)
 │       ├── js/config.js     ★ DATOS DEL NEGOCIO (WhatsApp, redes, horarios, legales)
 │       ├── js/data.js       ★ SERVICIOS, PRECIOS Y GALERÍA
-│       ├── js/main.js       Funciones (menú, comparador, galería, formulario)
+│       ├── js/main.js       Funciones (menú, visor antes/después, galería, formulario)
 │       └── img/             Fotos optimizadas (.webp) e íconos
 ├── .gitignore               Archivos que NUNCA se suben (.env, secretos, fotos originales)
 ├── .env.example             Plantilla para un futuro backend (no se usa hoy)
@@ -88,14 +88,14 @@ Cada servicio tiene:
   description: '...',
   benefits: ['...', '...', '...'],
   price: 120,                             // número en pesos, o null = "Por cotización"
-  tone: 'ink'                             // color de la tarjeta: 'ink' (negro), 'red', 'steel' (gris) o 'blue'
+  image: '8726'                           // foto de un trabajo real para la tarjeta, o null (muestra el texto de `material`)
 }
 ```
 
 El botón **Cotizar este servicio** de cada tarjeta prepara un mensaje de WhatsApp con el nombre del servicio, y el servicio también aparece en el formulario de contacto.
 
 Si cambias precios, actualiza también:
-- La etiqueta amarilla "Desde $120" y la franja de precios en movimiento del inicio (`index.html`).
+- El dato "Desde $120" de la portada (`index.html`) y el resumen de precios de `servicios.html`.
 - El texto de respaldo dentro de `<noscript>` en `index.html` y `servicios.html`.
 - La pregunta "¿Cuánto cuesta?" en `contacto.html`.
 - Los precios dentro de `<script type="application/ld+json">` en `index.html`.
@@ -108,7 +108,8 @@ Si cambias precios, actualiza también:
 - **Logo completo (imagen):** `docs/assets/img/logo-sneaklab.png` (letras oscuras, para fondos claros) y `docs/assets/img/logo-sneaklab-blanco.png` (letras blancas, para fondos oscuros). Aparece en el encabezado, en el pie de página y en grande en Inicio y Nosotros.
 - **Ícono solo (el tenis):** `docs/assets/img/favicon.svg`. De él salen `favicon-32.png`, `apple-touch-icon.png`, `icon-192.png` e `icon-512.png`. `icon-512.png` sirve como foto de perfil para WhatsApp o Instagram.
 - `og-sneaklab.jpg` es la imagen que aparece al compartir el enlace.
-- Los colores están al inicio de `docs/assets/css/styles.css` (`--red`, `--blue`, `--steel` y `--concrete` para los grises, y `--ink`, el negro). El estilo es de flyer: fotos grandes, cortes rectos y trama de puntos. Las fotos de portada de cada página son las etiquetas `<img class="page-hero-photo">` dentro de `page-hero`. La tipografía es Archivo, servida desde `docs/assets/fonts/` (sin Google Fonts, licencia OFL); los títulos usan su versión condensada en mayúsculas.
+- Los colores están al inicio de `docs/assets/css/styles.css`: `--paper` (#F7F7F5) y `--white` para los fondos, `--ink` (#0D0D0D) para las secciones negras, `--line` y `--gray` para grises y `--blue` (#2563FF) solo para acciones. Reparto aproximado: 70% blanco, 20% negro, 10% azul. Para texto secundario se usa `--muted` (#5E5E5E), porque el gris #7A7A7A no alcanza el contraste mínimo en textos pequeños.
+- Tipografías: **Space Grotesk** para títulos e **Inter** para el texto, servidas desde `docs/assets/fonts/` (sin Google Fonts, licencia OFL).
 
 ---
 
@@ -128,7 +129,7 @@ Si cambias precios, actualiza también:
 - `category`: una de las que están en `categories` (puedes crear nuevas; cada una aparece como filtro).
 - Si solo tienes la foto de "antes" de un par, no lo agregues hasta tener la de "después".
 
-Para el comparador antes/después, agrega un par en `comparisons`, de preferencia con dos fotos tomadas desde el mismo ángulo.
+Para el visor antes/después, agrega un par en `comparisons` con `label`, `view`, `before` y `after`. Las dos fotos se muestran lado a lado, no superpuestas, porque los encuadres de antes y después no son idénticos.
 
 Las fotos originales (`.jpeg`) están en `.gitignore` para no subir cientos de MB a GitHub.
 
@@ -221,6 +222,12 @@ El sitio funciona sin analítica y sin cookies. Para medir visitas:
 
 ## Seguridad y variables de entorno
 
+Antes de publicar, corre la revisión local (no usa internet ni modifica archivos):
+
+```bash
+bash scripts/security-check.sh
+```
+
 Lo que ya está implementado:
 
 - No se usa `innerHTML` con datos: todo el contenido dinámico se crea de forma segura con `textContent`.
@@ -260,7 +267,7 @@ Para agregar reservaciones, calendario, seguimiento de pedidos, panel de adminis
 ## Mantenimiento
 
 - Actualiza las fotos y la galería con trabajos nuevos, siempre con fotos propias.
-- Si modificas `styles.css` o algún archivo `.js`, sube el número de versión en las páginas HTML (por ejemplo cambia `?v=9` por `?v=10` en todos los `.html`). Así los navegadores descargan la versión nueva en vez de usar la que tenían guardada.
+- Si modificas `styles.css` o algún archivo `.js`, sube el número de versión en las páginas HTML (por ejemplo cambia `?v=10` por `?v=11` en todos los `.html`). Así los navegadores descargan la versión nueva en vez de usar la que tenían guardada.
 - Revisa precios y horarios en `config.js` y `data.js`.
 - Si cambias cómo usas los datos personales, actualiza el Aviso de privacidad y cambia `privacyNoticeVersion`.
 - Prueba el sitio en celular después de cada cambio importante.

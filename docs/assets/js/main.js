@@ -176,73 +176,62 @@
     items.forEach(function (n) { io.observe(n); });
   }
 
-  /* ---------- Comparador antes/después ---------- */
-  function initCompare(root) {
-    var range = $('.compare-range', root);
-    var before = $('.compare-before', root);
-    var after = $('.compare-after', root);
-    if (!range) return;
-    function set(value) {
-      root.style.setProperty('--pos', value + '%');
-      range.setAttribute('aria-valuetext', Math.round(value) + '% de la foto de antes visible');
-    }
-    range.addEventListener('input', function () { root.classList.remove('is-hinting'); set(range.value); });
-    set(range.value);
-
-    // Pista inicial: el divisor se mueve una vez para mostrar que se puede arrastrar.
-    if (!reduceMotion && root.hasAttribute('data-hint')) {
-      root.classList.add('is-hinting');
-      setTimeout(function () { set(68); }, 900);
-      setTimeout(function () { set(50); range.value = 50; }, 1900);
-      setTimeout(function () { root.classList.remove('is-hinting'); }, 2900);
-    }
-
-    var group = root.getAttribute('data-compare');
-    var buttons = group ? $all('[data-compare-pair="' + group + '"] [data-pair]') : [];
-    buttons.forEach(function (button) {
-      button.addEventListener('click', function () {
-        var pair = DATA.comparisons.filter(function (p) { return p.id === button.getAttribute('data-pair'); })[0];
-        if (!pair) return;
-        buttons.forEach(function (b) { b.setAttribute('aria-pressed', String(b === button)); });
+  /* ---------- Visor de pares antes/después (lado a lado) ---------- */
+  // Las fotos de antes y después no tienen exactamente el mismo encuadre,
+  // así que se muestran una junto a la otra en vez de superponerse.
+  function initPairViewer(root) {
+    var chips = $('[data-pair-chips]', root);
+    var before = $('[data-pv="before"]', root);
+    var after = $('[data-pv="after"]', root);
+    var caption = $('[data-pv-caption]', root);
+    if (!chips || !before || !after) return;
+    function show(pair) {
+      root.classList.add('is-swapping');
+      setTimeout(function () {
         before.src = IMG + pair.before + '.webp';
         before.alt = pair.label + ' antes de la limpieza';
         after.src = IMG + pair.after + '.webp';
         after.alt = pair.label + ' después de la limpieza';
-        range.value = 50; set(50);
+        if (caption) caption.textContent = pair.label + (pair.view ? ', ' + pair.view.toLowerCase() : '') + '.';
+        root.classList.remove('is-swapping');
+      }, reduceMotion ? 0 : 160);
+    }
+    DATA.comparisons.forEach(function (pair, i) {
+      var b = el('button', { type: 'button', className: 'chip', 'aria-pressed': String(i === 0), text: pair.label });
+      b.addEventListener('click', function () {
+        $all('button', chips).forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+        show(pair);
       });
+      chips.appendChild(b);
     });
   }
 
-  function buildComparePairButtons() {
-    $all('[data-compare-pair]').forEach(function (wrap) {
-      DATA.comparisons.forEach(function (pair, i) {
-        wrap.appendChild(el('button', { type: 'button', className: 'chip', 'data-pair': pair.id, 'aria-pressed': String(i === 0), text: pair.label }));
-      });
-    });
-  }
-
-  /* ---------- Servicios (tarjetas tipo etiqueta de precio) ---------- */
-  var TONES = ['ink', 'red', 'steel', 'blue'];
-
-  function serviceCard(service, i) {
-    var tone = TONES.indexOf(service.tone) >= 0 ? service.tone : TONES[i % TONES.length];
+  /* ---------- Servicios ---------- */
+  function serviceCard(service, detailed) {
+    var media = service.image
+      ? el('div', { className: 'service-media' }, [img(service.image, service.imageAlt || '', { small: true, width: 480, height: 640 })])
+      : el('div', { className: 'service-media is-material', 'aria-hidden': 'true' }, [el('span', { text: service.material || service.name })]);
     var price = service.price
       ? el('p', { className: 'service-price' }, [document.createTextNode(formatPrice(service.price)), el('small', { text: 'MXN por par' })])
       : el('p', { className: 'service-price is-quote', text: 'Por cotización' });
-    var benefits = el('ul', { className: 'service-points', 'aria-label': 'Incluye' },
-      (service.benefits || []).map(function (b) { return el('li', { text: b }); }));
+    var benefits = detailed
+      ? el('ul', { className: 'service-points', 'aria-label': 'Incluye' },
+          (service.benefits || []).map(function (b) { return el('li', { text: b }); }))
+      : null;
     var cta = el('a', {
-      className: 'btn btn-ink btn-sm', 'data-wa': 'Hola SneakLab, quiero solicitar una cotización de: ' + service.name + '.',
+      className: 'link', 'data-wa': 'Hola SneakLab, quiero solicitar una cotización de: ' + service.name + '.',
       href: 'contacto.html', text: 'Cotizar este servicio',
       'aria-label': 'Solicitar cotización de ' + service.name + ' por WhatsApp'
     });
-    return el('article', { className: 'service-tag tone-' + tone, id: 'servicio-' + service.id }, [
-      service.group ? el('p', { className: 'service-group', text: service.group }) : null,
-      el('h3', { text: service.name }),
-      price,
-      el('p', { className: 'service-desc', text: service.description }),
-      benefits,
-      cta
+    return el('article', { className: 'service-card', id: 'servicio-' + service.id }, [
+      media,
+      el('div', { className: 'service-body' }, [
+        service.group ? el('p', { className: 'service-group', text: service.group }) : null,
+        el('div', { className: 'service-title' }, [el('h3', { text: service.name }), price]),
+        el('p', { className: 'service-desc', text: service.description }),
+        benefits,
+        cta
+      ])
     ]);
   }
 
@@ -252,8 +241,9 @@
       var list = ids.length
         ? ids.map(function (id) { return DATA.services.filter(function (s) { return s.id === id; })[0]; }).filter(Boolean)
         : DATA.services;
+      var detailed = grid.hasAttribute('data-services-detail');
       grid.textContent = '';
-      list.forEach(function (s, i) { grid.appendChild(serviceCard(s, i)); });
+      list.forEach(function (s) { grid.appendChild(serviceCard(s, detailed)); });
     });
     $all('[data-service-options]').forEach(function (select) {
       DATA.services.forEach(function (s) { select.appendChild(el('option', { value: s.name, text: s.name })); });
@@ -485,12 +475,11 @@
   }
 
   /* ---------- Inicio ---------- */
-  buildComparePairButtons();
   renderServices();
   applyConfig();
   initNav();
   initReveal();
-  $all('[data-compare]').forEach(initCompare);
+  $all('[data-pair-viewer]').forEach(initPairViewer);
   initGallery();
   initForm();
   initAnalytics();
