@@ -88,7 +88,7 @@ Cada servicio tiene:
   description: '...',
   benefits: ['...', '...', '...'],
   price: 120,                             // número en pesos, o null = "Por cotización"
-  tone: 'mint'                            // color de la tarjeta: 'mint', 'pink', 'sun' o 'blue'
+  tone: 'ink'                             // color de la tarjeta: 'ink' (negro), 'red', 'steel' (gris) o 'blue'
 }
 ```
 
@@ -108,7 +108,7 @@ Si cambias precios, actualiza también:
 - **Logo completo (imagen):** `docs/assets/img/logo-sneaklab.png` (letras oscuras, para fondos claros) y `docs/assets/img/logo-sneaklab-blanco.png` (letras blancas, para fondos oscuros). Aparece en el encabezado, en el pie de página y en grande en Inicio y Nosotros.
 - **Ícono solo (el tenis):** `docs/assets/img/favicon.svg`. De él salen `favicon-32.png`, `apple-touch-icon.png`, `icon-192.png` e `icon-512.png`. `icon-512.png` sirve como foto de perfil para WhatsApp o Instagram.
 - `og-sneaklab.jpg` es la imagen que aparece al compartir el enlace.
-- Los colores están al inicio de `docs/assets/css/styles.css` (`--blue`, `--pink`, `--sun`, `--mint` y `--ink`, el fondo oscuro). La tipografía es Archivo, servida desde `docs/assets/fonts/` (sin Google Fonts, licencia OFL); los títulos usan su versión condensada en mayúsculas.
+- Los colores están al inicio de `docs/assets/css/styles.css` (`--red`, `--blue`, `--steel` y `--concrete` para los grises, y `--ink`, el negro). El estilo es de flyer: fotos grandes, cortes rectos y trama de puntos. Las fotos de portada de cada página son las etiquetas `<img class="page-hero-photo">` dentro de `page-hero`. La tipografía es Archivo, servida desde `docs/assets/fonts/` (sin Google Fonts, licencia OFL); los títulos usan su versión condensada en mayúsculas.
 
 ---
 
@@ -260,7 +260,7 @@ Para agregar reservaciones, calendario, seguimiento de pedidos, panel de adminis
 ## Mantenimiento
 
 - Actualiza las fotos y la galería con trabajos nuevos, siempre con fotos propias.
-- Si modificas `styles.css` o algún archivo `.js`, sube el número de versión en las páginas HTML (por ejemplo cambia `?v=7` por `?v=8` en todos los `.html`). Así los navegadores descargan la versión nueva en vez de usar la que tenían guardada.
+- Si modificas `styles.css` o algún archivo `.js`, sube el número de versión en las páginas HTML (por ejemplo cambia `?v=9` por `?v=10` en todos los `.html`). Así los navegadores descargan la versión nueva en vez de usar la que tenían guardada.
 - Revisa precios y horarios en `config.js` y `data.js`.
 - Si cambias cómo usas los datos personales, actualiza el Aviso de privacidad y cambia `privacyNoticeVersion`.
 - Prueba el sitio en celular después de cada cambio importante.

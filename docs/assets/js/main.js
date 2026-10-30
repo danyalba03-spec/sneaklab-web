@@ -222,7 +222,7 @@
   }
 
   /* ---------- Servicios (tarjetas tipo etiqueta de precio) ---------- */
-  var TONES = ['mint', 'pink', 'sun', 'blue'];
+  var TONES = ['ink', 'red', 'steel', 'blue'];
 
   function serviceCard(service, i) {
     var tone = TONES.indexOf(service.tone) >= 0 ? service.tone : TONES[i % TONES.length];

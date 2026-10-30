@@ -4,7 +4,7 @@
  * Servicios: cambia nombre, descripción, beneficios o precio.
  *   group: para qué materiales es el servicio (texto corto).
  *   price: número en pesos (ej. 120) o null para "Por cotización".
- *   tone: color de la tarjeta: 'mint', 'pink', 'sun' o 'blue'.
+ *   tone: color de la tarjeta: 'ink' (negro), 'red', 'steel' (gris) o 'blue'.
  * Galería: cada trabajo es un PAR de fotos (antes y después) del mismo
  *   tenis y, de preferencia, desde el mismo ángulo. Cada foto necesita su
  *   archivo en assets/img/ (versión grande y -sm). Una foto de "antes" nunca
@@ -19,7 +19,7 @@ window.SNEAKLAB_DATA = Object.freeze({
       description: 'Limpieza general por fuera: corte, entresuela y suela para quitar polvo y suciedad del uso diario.',
       benefits: ['Ideal para mantenimiento frecuente', 'Cuidado según el material', 'Agujetas incluidas en la revisión'],
       price: 120,
-      tone: 'mint'
+      tone: 'ink'
     },
     {
       id: 'aroma',
@@ -28,7 +28,7 @@ window.SNEAKLAB_DATA = Object.freeze({
       description: 'Todo lo de la limpieza básica más perfume especializado para calzado, con un aroma fresco.',
       benefits: ['Frescura extra por dentro', 'Perfume especial para tenis', 'Incluye la limpieza básica'],
       price: 140,
-      tone: 'pink'
+      tone: 'red'
     },
     {
       id: 'delicados',
@@ -37,7 +37,7 @@ window.SNEAKLAB_DATA = Object.freeze({
       description: 'Cuidado específico para gamuza, nobuk y tejidos sensibles que no aguantan una limpieza común.',
       benefits: ['Gamuza y nobuk', 'Técnica controlada', 'Protege textura y color'],
       price: 130,
-      tone: 'sun'
+      tone: 'steel'
     },
     {
       id: 'delicados-aroma',
