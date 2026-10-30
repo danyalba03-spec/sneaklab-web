@@ -105,6 +105,8 @@ Si cambias precios, actualiza también:
 
 ## Logo y colores
 
+- **Bienvenida:** la primera vez de cada sesión aparece el logo sobre blanco durante 1.3 s (`docs/assets/js/intro.js` y la sección "Bienvenida" de `styles.css`). Es solo CSS, no bloquea clics y no aparece si la persona tiene activado "reducir movimiento".
+
 - **Logo completo (imagen):** `docs/assets/img/logo-sneaklab.png` (letras oscuras, para fondos claros) y `docs/assets/img/logo-sneaklab-blanco.png` (letras blancas, para fondos oscuros). Aparece en el encabezado, en el pie de página y en grande en Inicio y Nosotros.
 - **Ícono solo (el tenis):** `docs/assets/img/favicon.svg`. De él salen `favicon-32.png`, `apple-touch-icon.png`, `icon-192.png` e `icon-512.png`. `icon-512.png` sirve como foto de perfil para WhatsApp o Instagram.
 - `og-sneaklab.jpg` es la imagen que aparece al compartir el enlace.
@@ -129,7 +131,7 @@ Si cambias precios, actualiza también:
 - `category`: una de las que están en `categories` (puedes crear nuevas; cada una aparece como filtro).
 - Si solo tienes la foto de "antes" de un par, no lo agregues hasta tener la de "después".
 
-Para el visor antes/después, agrega un par en `comparisons` con `label`, `view`, `before` y `after`. Las dos fotos se muestran lado a lado, no superpuestas, porque los encuadres de antes y después no son idénticos.
+Para el visor antes/después, agrega un par en `comparisons` con `label`, `view`, `before` y `after`. Las dos fotos se muestran lado a lado, no superpuestas, porque los encuadres de antes y después no son idénticos. Si algún día tomas un par con el mismo encuadre exacto (misma posición y distancia), agrégale `aligned: true` y ese par se mostrará con un deslizador.
 
 Las fotos originales (`.jpeg`) están en `.gitignore` para no subir cientos de MB a GitHub.
 
@@ -267,7 +269,7 @@ Para agregar reservaciones, calendario, seguimiento de pedidos, panel de adminis
 ## Mantenimiento
 
 - Actualiza las fotos y la galería con trabajos nuevos, siempre con fotos propias.
-- Si modificas `styles.css` o algún archivo `.js`, sube el número de versión en las páginas HTML (por ejemplo cambia `?v=10` por `?v=11` en todos los `.html`). Así los navegadores descargan la versión nueva en vez de usar la que tenían guardada.
+- Si modificas `styles.css` o algún archivo `.js`, sube el número de versión en las páginas HTML (por ejemplo cambia `?v=11` por `?v=12` en todos los `.html`). Así los navegadores descargan la versión nueva en vez de usar la que tenían guardada.
 - Revisa precios y horarios en `config.js` y `data.js`.
 - Si cambias cómo usas los datos personales, actualiza el Aviso de privacidad y cambia `privacyNoticeVersion`.
 - Prueba el sitio en celular después de cada cambio importante.

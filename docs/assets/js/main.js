@@ -140,12 +140,14 @@
       var onScroll = function () { header.classList.toggle('is-scrolled', window.scrollY > 8); };
       window.addEventListener('scroll', onScroll, { passive: true });
       onScroll();
+      initHeaderTheme(header);
     }
     if (!toggle || !nav) return;
     var label = $('.sr-only', toggle);
     function setOpen(open) {
       toggle.setAttribute('aria-expanded', String(open));
       nav.classList.toggle('is-open', open);
+      if (header) { header.classList.toggle('menu-open', open); header.dispatchEvent(new Event('sneaklab:menu')); }
       if (label) label.textContent = open ? 'Cerrar menú' : 'Abrir menú';
     }
     toggle.addEventListener('click', function () {
@@ -157,11 +159,109 @@
       if (e.key === 'Escape' && nav.classList.contains('is-open')) { setOpen(false); toggle.focus(); }
     });
     $all('a', nav).forEach(function (a) { a.addEventListener('click', function () { setOpen(false); }); });
-    window.matchMedia('(min-width: 861px)').addEventListener('change', function (mq) { if (mq.matches) setOpen(false); });
+    window.matchMedia('(min-width: 901px)').addEventListener('change', function (mq) { if (mq.matches) setOpen(false); });
+  }
+
+  // El header cambia a oscuro (con el logo blanco) mientras pasa sobre una sección negra.
+  function initHeaderTheme(header) {
+    var darks = $all('.section-dark, .page-intro-dark, .site-footer');
+    var logo = $('.logo img', header);
+    if (!darks.length || !('IntersectionObserver' in window)) return;
+    var light = logo ? logo.getAttribute('src') : '';
+    var white = IMG + 'logo-sneaklab-blanco.png';
+    var inside = [];
+    var io;
+    function update() {
+      var dark = inside.length > 0;
+      header.classList.toggle('is-dark', dark);
+      // Con el menú móvil abierto el header vuelve a ser blanco.
+      if (logo) logo.setAttribute('src', dark && !header.classList.contains('menu-open') ? white : light);
+    }
+    header.addEventListener('sneaklab:menu', update);
+    function observe() {
+      if (io) io.disconnect();
+      inside = [];
+      // Solo cuenta la franja que queda detrás del header.
+      var h = header.offsetHeight;
+      io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          var at = inside.indexOf(entry.target);
+          if (entry.isIntersecting && at < 0) inside.push(entry.target);
+          if (!entry.isIntersecting && at >= 0) inside.splice(at, 1);
+        });
+        update();
+      }, { rootMargin: '0px 0px ' + (h - window.innerHeight) + 'px 0px' });
+      darks.forEach(function (d) { io.observe(d); });
+    }
+    observe();
+    var timer;
+    window.addEventListener('resize', function () { clearTimeout(timer); timer = setTimeout(observe, 200); });
+  }
+
+  /* ---------- Barra de progreso y botón para volver arriba ---------- */
+  function initScrollExtras() {
+    var bar = el('div', { className: 'progress', 'aria-hidden': 'true' });
+    var top = el('button', { type: 'button', className: 'to-top', 'aria-label': 'Volver arriba' });
+    document.body.appendChild(bar);
+    document.body.appendChild(top);
+    var raf = 0;
+    function paint() {
+      raf = 0;
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      var y = window.scrollY;
+      bar.style.setProperty('--p', max > 0 ? String(Math.min(1, y / max)) : '0');
+      bar.hidden = max < window.innerHeight;
+      top.classList.toggle('is-visible', y > window.innerHeight * 1.2);
+    }
+    function queue() { if (!raf) raf = requestAnimationFrame(paint); }
+    window.addEventListener('scroll', queue, { passive: true });
+    window.addEventListener('resize', queue);
+    top.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+      var logo = $('.logo');
+      if (logo) logo.focus({ preventScroll: true });
+    });
+    paint();
+  }
+
+  /* ---------- Portada: profundidad sutil en la foto ---------- */
+  function initHeroDepth() {
+    var media = $('.hero-media');
+    if (!media || reduceMotion) return;
+    var image = $('img', media);
+    var px = 0, py = 0, sy = 0, raf = 0;
+    function paint() {
+      raf = 0;
+      image.style.setProperty('--tx', px.toFixed(2) + 'px');
+      image.style.setProperty('--ty', (py + sy).toFixed(2) + 'px');
+    }
+    function queue() { if (!raf) raf = requestAnimationFrame(paint); }
+    window.addEventListener('scroll', function () {
+      if (window.scrollY > window.innerHeight * 1.5) return;
+      sy = window.scrollY * 0.06;
+      queue();
+    }, { passive: true });
+    // Movimiento con el cursor solo en equipos con mouse.
+    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      media.addEventListener('pointermove', function (e) {
+        var r = media.getBoundingClientRect();
+        px = ((e.clientX - r.left) / r.width - 0.5) * -14;
+        py = ((e.clientY - r.top) / r.height - 0.5) * -14;
+        queue();
+      });
+      media.addEventListener('pointerleave', function () { px = 0; py = 0; queue(); });
+    }
   }
 
   /* ---------- Aparición al desplazarse ---------- */
   function initReveal() {
+    // Los contenedores con data-reveal-stagger animan a sus hijos uno tras otro.
+    $all('[data-reveal-stagger]').forEach(function (group) {
+      Array.prototype.forEach.call(group.children, function (child, i) {
+        child.setAttribute('data-reveal', '');
+        child.style.setProperty('--i', String(Math.min(i, 6)));
+      });
+    });
     var items = $all('[data-reveal]');
     if (!items.length) return;
     if (reduceMotion || !('IntersectionObserver' in window)) {
@@ -184,10 +284,22 @@
     var before = $('[data-pv="before"]', root);
     var after = $('[data-pv="after"]', root);
     var caption = $('[data-pv-caption]', root);
+    var stage = $('.pv-stage', root);
     if (!chips || !before || !after) return;
+    // Deslizador solo para pares marcados con aligned: true (mismo encuadre exacto).
+    var range = el('input', { type: 'range', className: 'pv-range', min: '0', max: '100', value: '50', step: '1', 'aria-label': 'Deslizar para comparar antes y después' });
+    stage.appendChild(range);
+    function setPos(v) {
+      stage.style.setProperty('--pos', v + '%');
+      range.setAttribute('aria-valuetext', Math.round(v) + '% de la foto de antes visible');
+    }
+    range.addEventListener('input', function () { setPos(range.value); });
     function show(pair) {
       root.classList.add('is-swapping');
       setTimeout(function () {
+        stage.classList.toggle('is-compare', !!pair.aligned);
+        range.hidden = !pair.aligned;
+        range.value = 50; setPos(50);
         before.src = IMG + pair.before + '.webp';
         before.alt = pair.label + ' antes de la limpieza';
         after.src = IMG + pair.after + '.webp';
@@ -204,6 +316,9 @@
       });
       chips.appendChild(b);
     });
+    stage.classList.toggle('is-compare', !!(DATA.comparisons[0] && DATA.comparisons[0].aligned));
+    range.hidden = !stage.classList.contains('is-compare');
+    setPos(50);
   }
 
   /* ---------- Servicios ---------- */
@@ -218,8 +333,10 @@
       ? el('ul', { className: 'service-points', 'aria-label': 'Incluye' },
           (service.benefits || []).map(function (b) { return el('li', { text: b }); }))
       : null;
+    var waText = 'Hola SneakLab, quiero cotizar: ' + service.name +
+      (service.price ? ' (' + formatPrice(service.price) + ' MXN por par, sujeto a confirmación al revisar mi par).' : '.');
     var cta = el('a', {
-      className: 'link', 'data-wa': 'Hola SneakLab, quiero solicitar una cotización de: ' + service.name + '.',
+      className: 'btn btn-card btn-sm', 'data-wa': waText,
       href: 'contacto.html', text: 'Cotizar este servicio',
       'aria-label': 'Solicitar cotización de ' + service.name + ' por WhatsApp'
     });
@@ -243,7 +360,12 @@
         : DATA.services;
       var detailed = grid.hasAttribute('data-services-detail');
       grid.textContent = '';
-      list.forEach(function (s) { grid.appendChild(serviceCard(s, detailed)); });
+      list.forEach(function (s, i) {
+        var card = serviceCard(s, detailed);
+        card.setAttribute('data-reveal', '');
+        card.style.setProperty('--i', String(i));
+        grid.appendChild(card);
+      });
     });
     $all('[data-service-options]').forEach(function (select) {
       DATA.services.forEach(function (s) { select.appendChild(el('option', { value: s.name, text: s.name })); });
@@ -297,9 +419,12 @@
       DATA.categories.forEach(function (cat, i) {
         var b = el('button', { type: 'button', className: 'chip', 'aria-pressed': String(i === 0), text: cat.label });
         b.addEventListener('click', function () {
+          if (current === cat.id) return;
           current = cat.id;
           $all('button', filters).forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
-          render(true);
+          if (reduceMotion) { render(false); return; }
+          grid.classList.add('is-filtering');
+          setTimeout(function () { render(true); grid.classList.remove('is-filtering'); }, 180);
         });
         filters.appendChild(b);
       });
@@ -309,6 +434,11 @@
       index = (i + photos.length) % photos.length;
       var photo = photos[index];
       var image = $('img', dialog);
+      if (dialog.open && !reduceMotion) {
+        image.classList.remove('is-changing');
+        void image.offsetWidth; // reinicia la transición
+        image.classList.add('is-changing');
+      }
       image.src = IMG + photo.file + '.webp';
       image.alt = altText(photo.item, photo.stage);
       var cap = $('figcaption', dialog);
@@ -331,6 +461,15 @@
         if (e.key === 'ArrowRight') show(index + 1);
       });
       dialog.addEventListener('click', function (e) { if (e.target === dialog) dialog.close(); });
+      // Deslizar con el dedo para cambiar de foto.
+      var startX = null;
+      dialog.addEventListener('touchstart', function (e) { startX = e.touches[0].clientX; }, { passive: true });
+      dialog.addEventListener('touchend', function (e) {
+        if (startX === null) return;
+        var dx = e.changedTouches[0].clientX - startX;
+        startX = null;
+        if (Math.abs(dx) > 50) show(index + (dx < 0 ? 1 : -1));
+      }, { passive: true });
       dialog.addEventListener('close', function () { if (lastFocus) lastFocus.focus(); });
     }
     render(false);
@@ -478,6 +617,8 @@
   renderServices();
   applyConfig();
   initNav();
+  initScrollExtras();
+  initHeroDepth();
   initReveal();
   $all('[data-pair-viewer]').forEach(initPairViewer);
   initGallery();
